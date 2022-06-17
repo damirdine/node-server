@@ -33,7 +33,25 @@ router.post('/adduser',function(req,res){
   //Set the collection
   var collection = db.get('userlist');
 
-  collection.insert(
+  if(actionType=="edit"){
+    collection.insert(
+      {
+        "username" : userName,
+        "useremail": userEmail,
+        "userfullname":userFullName,
+        "userage":userAge,
+        "userlocation":userLocation,
+        "usergender":userGender
+      }, 
+      function(err,doc){
+        if(err){
+          res.send("Problem for adding user to database.")
+        }
+        res.redirect("userlist");
+      }
+    )
+  }else{
+    collection.insert(
     {
       "username" : userName,
       "useremail": userEmail,
@@ -48,10 +66,32 @@ router.post('/adduser',function(req,res){
       }
       res.redirect("userlist");
     }
-    
+    )
+  }
+  
+});
 
-  )
+router.get('/deleteuser/:id', function(req,res){
+  var db=req.db;
+  var collection =db.get('userlist');
+  var userToDelete = req.params.id;
+  collection.remove({'id':userToDelete},function(err){
+    if(err){
+      res.send("Problem for delete in user in the database");
+    }
+    else{
+      res.redirect("users/userlist");
+    }
+  });
+});
 
-}
-)
+router.get('/:id', function(req,res){
+  var db =req.db;
+  var userToFind = req.params.id;
+  var collection = dg.get(userlist);
+  collection.findOne({"_id": userTofind},{},function(e,docs){
+    res.json(docs);
+  })
+})
+
 module.exports = router;

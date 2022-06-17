@@ -15,27 +15,68 @@
         <%
         var list = '';
         for(user of userlist){
-            list += '<li><a href="mailto:' + user.email + '">' + user.username + '</a></li>';
+            list += '<li><a href="#" onclick="showUser(\''+user._id+'\')">' + user.username + '</a>';
+            list += '<span style="margin-left:20px"><a href="#" onclick="updateUser(\''+user._id+'\')">Update</a></span>';
+            list += '<span style="margin-left:20px"><a href="/users/deleteuser/' + user._id + '")>Delete</a></span>';
+            list += '</li>';
         }
         %>
         <%- list %>
     </ul>
     <form action="/users/adduser" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="email" name="useremail" placeholder="Email">
-        <input type="text" name="userfullname" placeholder="Full Name">
-        <input type="number" name="userage" placeholder="Age">
-        <input type="text" name="userlocation" placeholder="Location">
-        <select name="usergender" id="gender-select">
+        <input id="inputUserName" type="text" name="username" placeholder="Username" required>
+        <input id="inputUserEmail" type="email" name="useremail" placeholder="Email" required>
+        <input id="inputUserFullName" type="text" name="userfullname" placeholder="Full Name">
+        <input id="inputUserAge" type="number" name="userage" placeholder="Age">
+        <input id="inputUserLocation" type="text" name="userlocation" placeholder="Location">
+        <select name="usergender" id="inputUserGender">
             <option value="">--Please choose a gender --</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="other">Cat</option>
         </select>
+
+        <input id="inputActionType" type="hidden" name="actiontype" value="add">
+        <input id="inputUpdateId" type="hidden" name="updateid" value="">
+
         <button type="submit">Submit</button>
 
         </form>
-        <script type="text/javascript" src="javascript.js"></script>
+        <script type="text/javascript">
+            function updatUser(id){
+                $.ajax({
+                    url:"/users/"+id,
+                    cache:false
+                })
+                .done(function(json){
+                    if(json!=null){
+                        $('#inputUserName').val(json.username);
+                        $('#inputUserEmail').val(json.mail);
+                        $('#inputUserFullName').val(json.fullname);
+                        $('#inputUserAge').val(json.age);
+                        $('#inputUserLocation').val(json.location);
+                        $('#inputUserGender').val(json.gender);
+
+                        $('#inputActionType').val("edit");
+                        $('#inputUpdateId').val(id);
+                        $('#inputUserName').focus();
+                    }
+                }
+                )
+            }
+            function showUser(id){
+                $ajax({
+                   url:"/users/"+id,
+                   cache: false
+                })
+                    .done(function(json)){
+                        if(json1=null){
+                            $('#userInfoName').html(json.fullname);
+                            $('#usreInfoAge').html()
+                        }
+                    }
+            }
+        </script>
 </body>
 
 </html>
