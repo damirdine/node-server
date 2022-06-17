@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UserList</title>
-</head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+    </script>
+</head >
 <body>
     <h1>UserList</h1>
     <ul>
-
         <%
-            var list = '';
-            for(user of userlist){
-                list += '<li><a href="mailto:' + user.email + '">'+ user.username + '</a></li>';
-            }
+        var list = '';
+        for(user of userlist){
+            list += '<li><a href="mailto:' + user.email + '">' + user.username + '</a></li>';
+        }
         %>
         <%- list %>
     </ul>
+    <form action="/users/adduser" method="post">
+        <input type="text" name="username" placeholder="Username">
+        <input type="email" name="useremail" placeholder="Email">
+        <input type="text" name="userfullname" placeholder="Full Name">
+        <input type="number" name="userage" placeholder="Age">
+        <input type="text" name="userlocation" placeholder="Location">
+        <select name="usergender" id="gender-select">
+            <option value="">--Please choose a gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="other">Cat</option>
+        </select>
+        <button type="submit">Submit</button>
+
+        </form>
+        <script type="text/javascript" src="javascript.js"></script>
 </body>
+
 </html>
