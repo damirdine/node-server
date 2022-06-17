@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserList</title>
+</head>
+<body>
+    <h1>UserList</h1>
+    <ul>
+
+        <%
+            var list = '';
+            for(user of userlist){
+                list += '<li><a href="mailto:' + user.email + '">'+ user.username + '</a></li>';
+            }
+        %>
+        <%- list %>
+    </ul>
+</body>
+</html>
