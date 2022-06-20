@@ -41,59 +41,52 @@
         <button type="submit">Submit</button>
 
         </form>
+
+        <div id="showUser" style="width: 20%; float: left; display: none">
+            <strong>Name :</strong> <span id="userInfoName"></span>
+            <br>
+            <strong>Age :</strong> <span id="userInfoAge"></span>
+            <br>
+            <strong>Gender :</strong> <span id="userInfoGender"></span>
+            <br>
+            <strong>Location :</strong> <span id="userInfoLocation"></span>
+            <br>
+        </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            function editer(dataUser){
-                document.getElementById('inputUserName').value = dataUser.username
-                document.getElementById('inputUserEmail').value = dataUser.email
-                document.getElementById('inputUserFullName').value = dataUser.fullname
-                document.getElementById('inputUserAge').value = dataUser.age
-                document.getElementById('inputUserLocation').value = dataUser.location
-                document.getElementById('inputUserGender').value = dataUser.gender
-
-                document.getElementById('inputActionType').value = "edit"
-                document.getElementById('inputUpdateId').value = dataUser._id
-                document.getElementById('inputUserName').focus()
-
-            }
             function updateUser(id){
                 fetch(`/users/${id}`)
                 .then(response => response.json())
-                .then(response => editer(response))
-                .catch(error => alert("Erreur : " + error));
-                // $.ajax({
-                //     url:"/users/"+id,
-                //     cache:false
-                // })
-                // .done(function(json){
-                //     if(json!=null){
-                //         $('#inputUserName').val(json.username);
-                //         $('#inputUserEmail').val(json.mail);
-                //         $('#inputUserFullName').val(json.fullname);
-                //         $('#inputUserAge').val(json.age);
-                //         $('#inputUserLocation').val(json.location);
-                //         $('#inputUserGender').val(json.gender);
+                .then(response => 
+                    {
+                        document.getElementById('inputUserName').value = response.username
+                        document.getElementById('inputUserEmail').value = response.email
+                        document.getElementById('inputUserFullName').value = response.fullname
+                        document.getElementById('inputUserAge').value = response.age
+                        document.getElementById('inputUserLocation').value = response.location
+                        document.getElementById('inputUserGender').value = response.gender
 
-                //         $('#inputActionType').val("edit");
-                //         $('#inputUpdateId').val(id);
-                //         $('#inputUserName').focus();
-                //     }
-                // }
-                // )
+                        document.getElementById('inputActionType').value = "edit"
+                        document.getElementById('inputUpdateId').value = response._id
+                        document.getElementById('inputUserName').focus()
+                    }
+                )
+                .catch(error => alert("Erreur : " + error));
             };
             function showUser(id){
-                // $ajax({
-                //    url:"/users/"+id,
-                //    cache: false
-                // })
-                //     .done(function(json)){
-                //         if(json1=null){
-                //             $('#userInfoName').html(json.fullname);
-                //             $('#usreInfoAge').html(json.age);
-                //             $('#userInfoGender').html(json.gender);
-                //             $('#userInfoLocation').html(json.location);
-                //         }
-                //     }
+                fetch(`/users/${id}`)
+                .then(response => response.json())
+                .then(response => 
+                    {
+                        document.getElementById('userInfoName').textContent = response.fullname
+                        document.getElementById('userInfoAge').textContent = response.age
+                        document.getElementById('userInfoGender').textContent = response.gender
+                        document.getElementById('userInfoLocation').textContent = response.location
+                        document.getElementById('showUser').style.display = "block"
+                    }
+                )
+                .catch(error => alert("Erreur : " + error));
             };
         </script>
 </body>
