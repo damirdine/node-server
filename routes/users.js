@@ -32,43 +32,55 @@ router.post('/adduser',function(req,res){
 
   //Set the collection
   var collection = db.get('userlist');
-
-  if(actionType=="edit"){
-    collection.insert(
-      {
-        "username" : userName,
-        "useremail": userEmail,
-        "userfullname":userFullName,
-        "userage":userAge,
-        "userlocation":userLocation,
-        "usergender":userGender
-      }, 
-      function(err,doc){
-        if(err){
-          res.send("Problem for adding user to database.")
+  switch (actionType) {
+    case 'edit':
+      collection.update({'_id':updateId},
+        {
+          "username" : userName,
+          "useremail": userEmail,
+          "userfullname":userFullName,
+          "userage":userAge,
+          "userlocation":userLocation,
+          "usergender":userGender
+        }, 
+        function(err,doc){
+          if(err){
+            res.send("Problem for UPDATING user database.")
+          }
+          res.redirect("userlist");
+        });
+      break;
+    case 'add':
+    default:
+      collection.insert(
+        {
+          "username" : userName,
+          "useremail": userEmail,
+          "userfullname":userFullName,
+          "userage":userAge,
+          "userlocation":userLocation,
+          "usergender":userGender
+        }, 
+        function(err,doc){
+          if(err){
+            res.send("Problem for adding user to database.")
+          }
+          res.redirect("userlist");
         }
-        res.redirect("userlist");
-      }
-    )
-  }else{
-    collection.insert(
-    {
-      "username" : userName,
-      "useremail": userEmail,
-      "userfullname":userFullName,
-      "userage":userAge,
-      "userlocation":userLocation,
-      "usergender":userGender
-    }, 
-    function(err,doc){
-      if(err){
-        res.send("Problem for adding user to database.")
-      }
-      res.redirect("userlist");
-    }
-    )
+      )
+    
+      break;
   }
   
+});
+
+router.get('/:id', function(req,res){
+  var db =req.db;
+  var userToFind = req.params.id;
+  var collection = db.get('userlist');
+  collection.findOne({"_id": userToFind},{},function(e,docs){
+    res.json(docs);
+  })
 });
 
 router.get('/deleteuser/:id', function(req,res){
@@ -80,18 +92,10 @@ router.get('/deleteuser/:id', function(req,res){
       res.send("Problem for delete in user in the database");
     }
     else{
-      res.redirect("users/userlist");
+      res.redirect("/users/userlist");
     }
   });
 });
 
-router.get('/:id', function(req,res){
-  var db =req.db;
-  var userToFind = req.params.id;
-  var collection = dg.get(userlist);
-  collection.findOne({"_id": userTofind},{},function(e,docs){
-    res.json(docs);
-  })
-})
 
 module.exports = router;
