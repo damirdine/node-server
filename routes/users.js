@@ -29,6 +29,8 @@ router.post('/adduser',function(req,res){
   var userAge = req.body.userage;
   var userLocation = req.body.userlocation;
   var userGender = req.body.usergender;
+  var actionType = req.body.actiontype;
+  var updateId = req.body.updateid;
 
   //Set the collection
   var collection = db.get('userlist');
@@ -87,7 +89,7 @@ router.get('/deleteuser/:id', function(req,res){
   var db=req.db;
   var collection =db.get('userlist');
   var userToDelete = req.params.id;
-  collection.remove({'id':userToDelete},function(err){
+  collection.remove({'_id':userToDelete},function(err){
     if(err){
       res.send("Problem for delete in user in the database");
     }
