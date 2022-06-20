@@ -36,16 +36,16 @@ router.post('/adduser',function(req,res){
   var collection = db.get('userlist');
   switch (actionType) {
     case 'edit':
-      collection.update({'_id':updateId},
+      collection.update({ '_id' : updateId },{$set :
         {
           "username" : userName,
-          "useremail": userEmail,
-          "userfullname":userFullName,
-          "userage":userAge,
-          "userlocation":userLocation,
-          "usergender":userGender
-        }, 
-        function(err,doc){
+          "email": userEmail,
+          "fullname":userFullName,
+          "age":userAge,
+          "location":userLocation,
+          "gender":userGender
+        }},
+        function(err){
           if(err){
             res.send("Problem for UPDATING user database.")
           }
@@ -57,13 +57,13 @@ router.post('/adduser',function(req,res){
       collection.insert(
         {
           "username" : userName,
-          "useremail": userEmail,
-          "userfullname":userFullName,
-          "userage":userAge,
-          "userlocation":userLocation,
-          "usergender":userGender
+          "email": userEmail,
+          "fullname":userFullName,
+          "age":userAge,
+          "location":userLocation,
+          "gender":userGender
         }, 
-        function(err,doc){
+        function(err){
           if(err){
             res.send("Problem for adding user to database.")
           }

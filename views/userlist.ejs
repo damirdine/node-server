@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UserList</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
-    </script>
+    
 </head >
 <body>
     <h1>UserList</h1>
@@ -33,7 +32,7 @@
             <option value="">--Please choose a gender --</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="other">Cat</option>
+            <option value="other">other</option>
         </select>
 
         <input id="inputActionType" type="hidden" name="actiontype" value="add">
@@ -42,40 +41,60 @@
         <button type="submit">Submit</button>
 
         </form>
-        <script type="text/javascript">
-            function updateUser(id){
-                $.ajax({
-                    url:"/users/"+id,
-                    cache:false
-                })
-                .done(function(json){
-                    if(json!=null){
-                        $('#inputUserName').val(json.username);
-                        $('#inputUserEmail').val(json.mail);
-                        $('#inputUserFullName').val(json.fullname);
-                        $('#inputUserAge').val(json.age);
-                        $('#inputUserLocation').val(json.location);
-                        $('#inputUserGender').val(json.gender);
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            function editer(dataUser){
+                document.getElementById('inputUserName').value = dataUser.username
+                document.getElementById('inputUserEmail').value = dataUser.email
+                document.getElementById('inputUserFullName').value = dataUser.fullname
+                document.getElementById('inputUserAge').value = dataUser.age
+                document.getElementById('inputUserLocation').value = dataUser.location
+                document.getElementById('inputUserGender').value = dataUser.gender
 
-                        $('#inputActionType').val("edit");
-                        $('#inputUpdateId').val(id);
-                        $('#inputUserName').focus();
-                    }
-                }
-                )
+                document.getElementById('inputActionType').value = "edit"
+                document.getElementById('inputUpdateId').value = dataUser._id
+                document.getElementById('inputUserName').focus()
+
             }
+            function updateUser(id){
+                fetch(`/users/${id}`)
+                .then(response => response.json())
+                .then(response => editer(response))
+                .catch(error => alert("Erreur : " + error));
+                // $.ajax({
+                //     url:"/users/"+id,
+                //     cache:false
+                // })
+                // .done(function(json){
+                //     if(json!=null){
+                //         $('#inputUserName').val(json.username);
+                //         $('#inputUserEmail').val(json.mail);
+                //         $('#inputUserFullName').val(json.fullname);
+                //         $('#inputUserAge').val(json.age);
+                //         $('#inputUserLocation').val(json.location);
+                //         $('#inputUserGender').val(json.gender);
+
+                //         $('#inputActionType').val("edit");
+                //         $('#inputUpdateId').val(id);
+                //         $('#inputUserName').focus();
+                //     }
+                // }
+                // )
+            };
             function showUser(id){
-                $ajax({
-                   url:"/users/"+id,
-                   cache: false
-                })
-                    .done(function(json)){
-                        if(json1=null){
-                            $('#userInfoName').html(json.fullname);
-                            $('#usreInfoAge').html()
-                        }
-                    }
-            }
+                // $ajax({
+                //    url:"/users/"+id,
+                //    cache: false
+                // })
+                //     .done(function(json)){
+                //         if(json1=null){
+                //             $('#userInfoName').html(json.fullname);
+                //             $('#usreInfoAge').html(json.age);
+                //             $('#userInfoGender').html(json.gender);
+                //             $('#userInfoLocation').html(json.location);
+                //         }
+                //     }
+            };
         </script>
 </body>
 
